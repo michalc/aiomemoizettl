@@ -8,7 +8,7 @@ def long_description():
 
 setuptools.setup(
     name='aiomemoizettl',
-    version='0.0.1',
+    version='0.0.2',
     author='Michal Charemza',
     author_email='michal@charemza.name',
     description='Memoize asyncio Python calls with a per-result TTL',
