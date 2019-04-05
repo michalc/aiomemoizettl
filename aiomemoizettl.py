@@ -1,7 +1,7 @@
 import asyncio
 
 
-def memoizettl(func, get_ttl):
+def memoize_ttl(func, get_ttl):
 
     loop = asyncio.get_event_loop()
     cache = {}

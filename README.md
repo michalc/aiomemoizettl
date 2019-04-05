@@ -12,16 +12,16 @@ pip install aiomemoizettl
 
 ## Usage
 
-For a coroutine whose arguments are hashable, you can create a _memoized_ version by passing it to `memoize`, along with a function that converts its return value to a TTL.
+For a coroutine whose arguments are hashable, you can create a _memoized_ version by passing it to `memoize_ttl`, along with a function that converts its return value to a TTL.
 
 For example, the below
 
 ```python
 import asyncio
-from aiomemoizettl import memoizettl
+from aiomemoizettl import memoize_ttl
 
 async def main():
-    memoized = memoizettl(coro, get_ttl=lambda result: result['ttl'])
+    memoized = memoize_ttl(coro, get_ttl=lambda result: result['ttl'])
     results = await asyncio.gather(*[
         memoized(1),
         memoized(2),

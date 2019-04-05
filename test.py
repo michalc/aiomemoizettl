@@ -11,7 +11,7 @@ from aiofastforward import (
     FastForward,
 )
 from aiomemoizettl import (
-    memoizettl,
+    memoize_ttl,
 )
 
 
@@ -51,7 +51,7 @@ class TestMemoize(TestCase):
             await asyncio.sleep(0)
             return 'value'
 
-        memoized = memoizettl(func, lambda _: 100)
+        memoized = memoize_ttl(func, lambda _: 100)
 
         task_a = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
         task_b = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
@@ -72,7 +72,7 @@ class TestMemoize(TestCase):
             mock(*args, **kwargs)
             return future
 
-        memoized = memoizettl(func, lambda _: 100)
+        memoized = memoize_ttl(func, lambda _: 100)
 
         task_a = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
         task_b = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
@@ -98,7 +98,7 @@ class TestMemoize(TestCase):
             await until_called_twice()
             return kwargs['b']
 
-        memoized = memoizettl(func, lambda _: 100)
+        memoized = memoize_ttl(func, lambda _: 100)
 
         task_a = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b_a'))
         task_b = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b_b'))
@@ -122,7 +122,7 @@ class TestMemoize(TestCase):
             mock(*args, **kwargs)
             return results.pop()
 
-        memoized = memoizettl(func, lambda _: 100)
+        memoized = memoize_ttl(func, lambda _: 100)
 
         task_a = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
         task_a_result = await task_a
@@ -147,7 +147,7 @@ class TestMemoize(TestCase):
             return results.pop()
 
         with FastForward(loop) as forward:
-            memoized = memoizettl(func, lambda result: result)
+            memoized = memoize_ttl(func, lambda result: result)
 
             task_a = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b_a'))
             task_b = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b_b'))
@@ -180,7 +180,7 @@ class TestMemoize(TestCase):
             return results.pop()
 
         with FastForward(loop) as forward:
-            memoized = memoizettl(func, lambda result: result)
+            memoized = memoize_ttl(func, lambda result: result)
 
             forward(0.5)
             result_a = await memoized(10, 20, a='val_a', b='val_b')
@@ -209,7 +209,7 @@ class TestMemoize(TestCase):
             await asyncio.sleep(0)
             raise Exception(results.pop())
 
-        memoized = memoizettl(func, lambda _: 100)
+        memoized = memoize_ttl(func, lambda _: 100)
 
         task_a = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
         task_b = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
@@ -228,7 +228,7 @@ class TestMemoize(TestCase):
             raise Exception('a')
 
         try:
-            await memoizettl(func, lambda _: 100)()
+            await memoize_ttl(func, lambda _: 100)()
         except Exception as exception:
             self.assertEqual(exception.__context__, None)
 
@@ -244,7 +244,7 @@ class TestMemoize(TestCase):
             await asyncio.sleep(0)
             raise Exception(results.pop())
 
-        memoized = memoizettl(func, lambda _: 100)
+        memoized = memoize_ttl(func, lambda _: 100)
 
         task_a = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
 
@@ -272,7 +272,7 @@ class TestMemoize(TestCase):
             called.set()
             await asyncio.Future()
 
-        memoized = memoizettl(func, lambda _: 100)
+        memoized = memoize_ttl(func, lambda _: 100)
 
         task_a = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
         task_b = asyncio.ensure_future(memoized(10, 20, a='val_a', b='val_b'))
