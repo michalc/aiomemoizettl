@@ -223,6 +223,16 @@ class TestMemoize(TestCase):
         self.assertEqual(mock.mock_calls, [call(10, 20, a='val_a', b='val_b')])
 
     @async_test
+    async def test_exception_has_no_context(self):
+        async def func():
+            raise Exception('a')
+
+        try:
+            await memoizettl(func, lambda _: 100)()
+        except Exception as exception:
+            self.assertEqual(exception.__context__, None)
+
+    @async_test
     async def test_identical_sequential_not_memoized_exception(self):
         loop = asyncio.get_event_loop()
         mock = Mock()
